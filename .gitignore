@@ -26,3 +26,4 @@ replay_pid*
 # idea nonsense
 .idea/
 out/
+netproject.iml

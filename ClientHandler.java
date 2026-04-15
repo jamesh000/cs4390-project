@@ -9,18 +9,17 @@ public class ClientHandler implements Runnable {
     }
 
     public void run() {
-        try (
-        BufferedReader inFromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        try (BufferedReader inFromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-        DataOutputStream  outToClient =
-                new DataOutputStream(socket.getOutputStream());
-        ) {
-            String clientSentence = inFromClient.readLine();
+             DataOutputStream outToClient = new DataOutputStream(socket.getOutputStream());) {
+            while (true) {
+                String clientSentence = inFromClient.readLine();
 
-            System.out.println("Server received message!" + clientSentence);
-            String capitalizedSentence = clientSentence.toUpperCase() + '\n';
+                System.out.println("Server received message!" + clientSentence);
+                //String capitalizedSentence = clientSentence.toUpperCase() + '\n';
 
-            outToClient.writeBytes(capitalizedSentence);
+                outToClient.writeBytes(clientSentence + '\n');
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

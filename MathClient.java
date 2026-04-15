@@ -1,25 +1,26 @@
 import java.io.*;
 import java.net.*;
-class TCPClient {
 
-    public static void main(String argv[]) throws Exception
-    {
+class MathClient {
+
+    public static void main(String argv[]) throws Exception {
         String sentence;
         String modifiedSentence;
-        System.out.println("Client is running: " );
+        System.out.println("Client is running: ");
 
         Socket clientSocket = new Socket("127.0.0.1", 6789);
 
         BufferedReader inFromUser =
-          new BufferedReader(new InputStreamReader(System.in));
+                new BufferedReader(new InputStreamReader(System.in));
 
         BufferedReader inFromServer =
                 new BufferedReader(new
-                InputStreamReader(clientSocket.getInputStream()));
+                        InputStreamReader(clientSocket.getInputStream()));
 
         DataOutputStream outToServer =
-          new DataOutputStream(clientSocket.getOutputStream());
+                new DataOutputStream(clientSocket.getOutputStream());
 
+        while (true) {
             sentence = inFromUser.readLine();
 
             outToServer.writeBytes(sentence + '\n');
@@ -27,9 +28,7 @@ class TCPClient {
             modifiedSentence = inFromServer.readLine();
 
             System.out.println("FROM SERVER: " + modifiedSentence);
-
-            clientSocket.close();
-
-          }
-      }
+        }
+    }
+}
 

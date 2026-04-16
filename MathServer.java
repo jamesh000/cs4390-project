@@ -5,7 +5,7 @@ import java.util.concurrent.*;
 class MathServer {
 
     public static void main(String argv[]) throws Exception {
-        ServerSocket welcomeSocket = new ServerSocket(6789);
+        ServerSocket welcomeSocket = new ServerSocket(Integer.parseInt(argv[0]));
         ExecutorService executor = Executors.newCachedThreadPool();
         ClientLogger logService = new ClientLogger();
 

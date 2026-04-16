@@ -6,7 +6,7 @@ class MathClient {
     public static void main(String argv[]) throws Exception {
         System.out.println("Client is running: ");
 
-        Socket clientSocket = new Socket("127.0.0.1", 6789);
+        Socket clientSocket = new Socket(argv[0], Integer.parseInt(argv[1]));
 
         BufferedReader inFromUser =
                 new BufferedReader(new InputStreamReader(System.in));
@@ -15,7 +15,7 @@ class MathClient {
         ObjectInputStream inFromServer = new ObjectInputStream(clientSocket.getInputStream());
 
         // Send name to server
-        outToServer.writeObject(new Message("Test", false, ""));
+        outToServer.writeObject(new Message(argv[2], false, ""));
 
         // Wait for Ack
         inFromServer.readObject();

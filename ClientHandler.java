@@ -59,7 +59,7 @@ public class ClientHandler implements Runnable {
         LocalDateTime connTime = connectionHandler.disconnect(clientName);
         Duration timeConnected = Duration.between(connTime, dcTime);
 
-        logService.log(dcTime + ": Client " + clientName + " disconnected after " + timeConnected.toMinutes() + " minutes and " + timeConnected.getSeconds() + " seconds");
+        logService.log(dcTime + ": Client " + clientName + " disconnected after " + timeConnected.getSeconds() + " seconds");
     }
 
     private String process(String input) {
@@ -128,7 +128,7 @@ public class ClientHandler implements Runnable {
 
             return Integer.toString(result);
         } catch (Exception e) {
-            logService.log("Bad format!" + input);
+            logService.log(LocalDateTime.now() + ": Bad format from client " + clientName + ": " + input);
             return "Bad format!";
         }
 

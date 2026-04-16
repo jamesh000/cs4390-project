@@ -4,9 +4,11 @@ import java.net.*;
 public class ClientHandler implements Runnable {
     private final Socket socket;
     private String clientName;
+    private ClientLogger logService;
 
-    public ClientHandler(Socket socket) {
+    public ClientHandler(Socket socket, ClientLogger logService) {
         this.socket = socket;
+        this.logService = logService;
     }
 
     public void run() {
@@ -17,7 +19,7 @@ public class ClientHandler implements Runnable {
             // Receive client name before proceeding
             Message nameMessage = (Message) inFromClient.readObject();
             clientName = nameMessage.name;
-            System.out.println("Client " + clientName + " connected");
+            logService.log("Client " + clientName + " connected");
 
             // Send Ack of name
             outToClient.writeObject(new Message("", false, ""));
@@ -29,7 +31,7 @@ public class ClientHandler implements Runnable {
 
                 // Check for close request
                 if (clientMessage.close) {
-                    System.out.println("Client " + clientName + " DCed");
+                    logService.log("Client " + clientName + " DCed");
                     break;
                 }
 
@@ -41,7 +43,7 @@ public class ClientHandler implements Runnable {
             }
         } catch (Exception e) {
             // Should be better handling
-            e.printStackTrace();
+            logService.log(e.getMessage());
         }
     }
 

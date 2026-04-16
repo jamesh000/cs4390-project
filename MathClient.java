@@ -14,15 +14,32 @@ class MathClient {
         ObjectOutputStream outToServer = new ObjectOutputStream(clientSocket.getOutputStream());
         ObjectInputStream inFromServer = new ObjectInputStream(clientSocket.getInputStream());
 
+        // Send name to server
+        outToServer.writeObject(new Message("Test", false, ""));
+
+        // Wait for Ack
+        inFromServer.readObject();
+
+        // Input loop
         while (true) {
+            // Read user input
             String input = inFromUser.readLine();
 
+            // Check for exit command
+            if (input.equals("/exit")) {
+                outToServer.writeObject(new Message("", true, ""));
+                break;
+            }
+
+            // Send the input to the server
             outToServer.writeObject(new Message("", false, input));
 
+            // Read response and print it out
             Message serverResponse = (Message) inFromServer.readObject();
-
             System.out.println("FROM SERVER: " + serverResponse.data);
         }
+
+        clientSocket.close();
     }
 }
 

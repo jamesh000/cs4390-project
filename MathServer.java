@@ -1,4 +1,3 @@
-import java.io.*;
 import java.net.*;
 import java.util.concurrent.*;
 
@@ -14,7 +13,8 @@ class MathServer {
 
         ServerSocket welcomeSocket = new ServerSocket(port);
         ExecutorService executor = Executors.newCachedThreadPool();
-        ClientLogger logService = new ClientLogger();
+        ServerLogger logService = new ServerLogger();
+        ConnectionHandler connectionHandler = new ConnectionHandler();
 
         logService.start();
 
@@ -23,7 +23,7 @@ class MathServer {
         while (true) {
             Socket connectionSocket = welcomeSocket.accept();
 
-            executor.execute(new ClientHandler(connectionSocket, logService));
+            executor.execute(new ClientHandler(connectionSocket, logService, connectionHandler));
         }
     }
 }

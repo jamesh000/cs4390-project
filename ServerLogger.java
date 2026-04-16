@@ -1,11 +1,11 @@
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class ClientLogger {
+public class ServerLogger {
     private final BlockingQueue<String> queue = new LinkedBlockingQueue<>();
     private final Thread thread;
 
-    public ClientLogger() {
+    public ServerLogger() {
         // Thread that receives logs from clientHandler threads and writes to the log
         thread = new Thread(() -> {
             try {

@@ -4,8 +4,6 @@ import java.net.*;
 class MathClient {
 
     public static void main(String argv[]) throws Exception {
-        String sentence;
-        String modifiedSentence;
         System.out.println("Client is running: ");
 
         Socket clientSocket = new Socket("127.0.0.1", 6789);
@@ -13,21 +11,17 @@ class MathClient {
         BufferedReader inFromUser =
                 new BufferedReader(new InputStreamReader(System.in));
 
-        BufferedReader inFromServer =
-                new BufferedReader(new
-                        InputStreamReader(clientSocket.getInputStream()));
-
-        DataOutputStream outToServer =
-                new DataOutputStream(clientSocket.getOutputStream());
+        ObjectOutputStream outToServer = new ObjectOutputStream(clientSocket.getOutputStream());
+        ObjectInputStream inFromServer = new ObjectInputStream(clientSocket.getInputStream());
 
         while (true) {
-            sentence = inFromUser.readLine();
+            String input = inFromUser.readLine();
 
-            outToServer.writeBytes(sentence + '\n');
+            outToServer.writeObject(new Message("", false, input));
 
-            modifiedSentence = inFromServer.readLine();
+            Message serverResponse = (Message) inFromServer.readObject();
 
-            System.out.println("FROM SERVER: " + modifiedSentence);
+            System.out.println("FROM SERVER: " + serverResponse.data);
         }
     }
 }

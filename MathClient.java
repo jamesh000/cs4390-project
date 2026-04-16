@@ -6,16 +6,44 @@ class MathClient {
     public static void main(String argv[]) throws Exception {
         System.out.println("Client is running: ");
 
-        Socket clientSocket = new Socket(argv[0], Integer.parseInt(argv[1]));
+        String name;
+        String serverAddr;
+        int serverPort;
 
+        if (argv.length < 1) {
+            throw new IllegalArgumentException("Too few arguments");
+        }
+
+        // Set name of client, must be provided
+        name = argv[0];
+
+        // Set server address, default is localhost
+        if (argv.length > 1) {
+            serverAddr = argv[1];
+        } else {
+            serverAddr = "127.0.0.1";
+        }
+
+        // Set server port, default is 6789
+        if (argv.length > 2) {
+            serverPort = Integer.parseInt(argv[3]);
+        } else {
+            serverPort = 6789;
+        }
+
+        // Open connection to server
+        Socket clientSocket = new Socket(serverAddr, serverPort);
+
+        // Open user input
         BufferedReader inFromUser =
                 new BufferedReader(new InputStreamReader(System.in));
 
+        // Open serialized object streams
         ObjectOutputStream outToServer = new ObjectOutputStream(clientSocket.getOutputStream());
         ObjectInputStream inFromServer = new ObjectInputStream(clientSocket.getInputStream());
 
         // Send name to server
-        outToServer.writeObject(new Message(argv[2], false, ""));
+        outToServer.writeObject(new Message(name, false, ""));
 
         // Wait for Ack
         inFromServer.readObject();
@@ -39,6 +67,7 @@ class MathClient {
             System.out.println("FROM SERVER: " + serverResponse.data);
         }
 
+        // Close socket and exit
         clientSocket.close();
     }
 }

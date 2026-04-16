@@ -5,7 +5,14 @@ import java.util.concurrent.*;
 class MathServer {
 
     public static void main(String argv[]) throws Exception {
-        ServerSocket welcomeSocket = new ServerSocket(Integer.parseInt(argv[0]));
+        int port;
+        if (argv.length < 1) {
+            port = 6789;
+        } else {
+            port = Integer.parseInt(argv[0]);
+        }
+
+        ServerSocket welcomeSocket = new ServerSocket(port);
         ExecutorService executor = Executors.newCachedThreadPool();
         ClientLogger logService = new ClientLogger();
 

@@ -6,6 +6,7 @@ public class ClientLogger {
     private final Thread thread;
 
     public ClientLogger() {
+        // Thread that receives logs from clientHandler threads and writes to the log
         thread = new Thread(() -> {
             try {
                 while (!Thread.currentThread().isInterrupted()) {
@@ -17,14 +18,17 @@ public class ClientLogger {
         });
     }
 
+    // Start the logger service
     public void start() {
         thread.start();
     }
 
+    // Log a given string
     public void log(String logMessage) {
         queue.offer(logMessage);
     }
 
+    // Function that handles the direct logging
     private void writeLog(String msg) {
         System.out.println(msg);
     }

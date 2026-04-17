@@ -6,10 +6,12 @@ class MathClient {
     public static void main(String argv[]) throws Exception {
         System.out.println("Client is running: ");
 
+        // Arguments
         String name;
         String serverAddr;
         int serverPort;
 
+        // Client name must be provided
         if (argv.length < 1) {
             throw new IllegalArgumentException("Too few arguments");
         }
@@ -71,4 +73,3 @@ class MathClient {
         clientSocket.close();
     }
 }
-

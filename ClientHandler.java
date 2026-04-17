@@ -49,7 +49,7 @@ public class ClientHandler implements Runnable {
                 outToClient.writeObject(new Message("", false, result));
             }
         } catch (Exception e) {
-            // Should be better handling
+            // Connection is dead
             closeConnection();
         }
     }
@@ -69,7 +69,7 @@ public class ClientHandler implements Runnable {
             // Remove whitespace
             input = input.replaceAll("\\s+","");
 
-            // Naive string reading because Java sux
+            // String reading
             int i = 0;
             char c;
             int sign;
@@ -126,10 +126,12 @@ public class ClientHandler implements Runnable {
                     throw new Exception();
             }
 
+            // Log success
             logService.log(LocalDateTime.now() + ": Client " + clientName + " request processed with result " + result);
 
             return Integer.toString(result);
         } catch (Exception e) {
+            // Log failure
             logService.log(LocalDateTime.now() + ": Bad format from client " + clientName + ": " + input);
             return "Bad format!";
         }

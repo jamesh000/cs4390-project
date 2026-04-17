@@ -126,6 +126,8 @@ public class ClientHandler implements Runnable {
                     throw new Exception();
             }
 
+            logService.log(LocalDateTime.now() + ": Client " + clientName + " request processed with result " + result);
+
             return Integer.toString(result);
         } catch (Exception e) {
             logService.log(LocalDateTime.now() + ": Bad format from client " + clientName + ": " + input);
